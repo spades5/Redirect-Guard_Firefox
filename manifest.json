@@ -1,0 +1,32 @@
+{
+  "manifest_version": 2,
+  "name": "戒色小幫手",
+  "version": "1.0",
+  "description": "我們都很擔心你，別再尻了!",
+  "permissions": [
+    "storage",
+    "tabs",
+    "webNavigation",
+    "<all_urls>"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "BONK@armstrong.com",
+      "strict_min_version": "91.0"
+    }
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content_script.js"],
+    "run_at": "document_start"
+  }],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "icons": { "48": "icon48.png" }
+}
+

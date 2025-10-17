@@ -1,0 +1,37 @@
+<!doctype html>
+
+
+function showMsg(txt){ document.getElementById('msg').textContent = txt; setTimeout(()=>document.getElementById('msg').textContent='',2000)}
+
+
+document.getElementById('save').addEventListener('click', async ()=>{
+const redirectUrl = document.getElementById('redirectUrl').value.trim();
+const blockedDomains = document.getElementById('blockedDomains').value.split('\n').map(s=>s.trim()).filter(Boolean);
+const blockedQueries = document.getElementById('blockedQueries').value.split('\n').map(s=>s.trim()).filter(Boolean);
+const enabled = document.getElementById('enabled').checked;
+await browser.storage.sync.set({ redirectUrl, blockedDomains, blockedQueries, enabled });
+showMsg('Saved');
+});
+
+
+document.getElementById('restore').addEventListener('click', async ()=>{
+await browser.storage.sync.set(defaults);
+load();
+showMsg('Restored defaults');
+});
+
+
+async function load(){
+const cfg = await new Promise(r=>browser.storage.sync.get(null,r));
+const c = Object.assign({}, defaults, cfg);
+document.getElementById('redirectUrl').value = c.redirectUrl;
+document.getElementById('blockedDomains').value = (c.blockedDomains||[]).join('\n');
+document.getElementById('blockedQueries').value = (c.blockedQueries||[]).join('\n');
+document.getElementById('enabled').checked = c.enabled !== false;
+}
+
+
+load();
+</script>
+</body>
+</html>
